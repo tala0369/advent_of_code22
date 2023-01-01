@@ -1,7 +1,5 @@
 from pathlib import Path
 
-
-
 def get_input_data():
     filepath = Path(__file__).parent / "input.txt"
     with open(filepath, "r") as f:
@@ -36,7 +34,6 @@ def get_max_calories(calorie_ref, num):
     print(f"Total Cals: {total_cals}")
         
         
-
 if __name__ == "__main__":
     food_list = get_input_data()
     calorie_ref = get_calorie_count(food_list)
