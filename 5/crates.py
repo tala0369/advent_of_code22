@@ -43,10 +43,20 @@ def execute_stack_plan(stacks, moves):
             last_in_stack = new_stacks[move["start_col"]].pop(-1)
             new_stacks[move["end_col"]].append(last_in_stack)
     return new_stacks
+
+def execute_stack_plan_with_order(stacks, moves):
+    ordered_stacks = deepcopy(stacks)
+    for move in moves:
+        start_col = ordered_stacks[move["start_col"]]
+        subset = start_col[len(start_col)-move["num_crates"]:]
+        ordered_stacks[move["end_col"]] += subset
+        ordered_stacks[move["start_col"]] = start_col[:len(start_col)-move["num_crates"]]
+    return ordered_stacks
     
 if __name__ == "__main__":
     stacks, moves = get_input_data()
     rearranged_stacks = rearrange_stacks(stacks)
     parsed_moves = parse_moves(moves)
     final_stacks = execute_stack_plan(rearranged_stacks, parsed_moves)
+    ordered_stacks = execute_stack_plan_with_order(rearranged_stacks, parsed_moves)
     print("Done")
