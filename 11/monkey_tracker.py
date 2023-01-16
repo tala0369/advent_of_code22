@@ -56,20 +56,20 @@ class Monkey():
     item_inspect_count: int = 0
 
 def take_monkey_turn(monkey, all_monkeys):
-    print(f"Monkey {monkey.num}")
+    #print(f"Monkey {monkey.num}")
     for item in monkey.current_items:
-        print(f" Inspecting: {item}")
+        #print(f" Inspecting: {item}")
         monkey.item_inspect_count += 1
         # Perform operation
         old = item
         new = eval(monkey.operation)//3
-        print(f"    New Val: {new}")
+        #print(f"    New Val: {new}")
         test_passed = new % monkey.test_num == 0
-        print(f"    Test passed?: {test_passed}")
+        #print(f"    Test passed?: {test_passed}")
         pass_to = monkey.if_true_pass if test_passed else monkey.if_false_pass
         monkey.current_items = monkey.current_items[1:]
         all_monkeys[pass_to].current_items.append(new)
-        print(f"    Passing to monkey: {pass_to}")
+        #print(f"    Passing to monkey: {pass_to}")
         
 def print_status(all_monkeys):
     for m in all_monkeys:
@@ -77,11 +77,13 @@ def print_status(all_monkeys):
     
 def run_turns(original_monkeys, turn_count):
     all_monkeys = copy.deepcopy(original_monkeys)
-    for turn in range(1, turn_count+1):
-        print(f"Starting Round: {turn}")
+    current_turn = 0
+    while current_turn < turn_count:
+        current_turn += 1
+        #print(f"Starting Round: {turn}")
         for monkey in all_monkeys:
             take_monkey_turn(monkey, all_monkeys)
-        print_status(all_monkeys)
+        #print_status(all_monkeys)
     return all_monkeys
 
 def print_monkey_biz(end_monkeys):
@@ -90,6 +92,26 @@ def print_monkey_biz(end_monkeys):
     mbiz = reduce(lambda x, y: x*y, top_two)
     print(mbiz)
     return
+
+def print_item_count(all_monkeys):
+    for m in all_monkeys:
+        print(f"Monkey {m.num} has inspected {m.item_inspect_count} items")
+
+def run_turns_no_div(original_monkeys, turn_count):
+    all_monkeys = copy.deepcopy(original_monkeys)
+    current_turn = 0
+    while current_turn < turn_count:
+        for monkey in all_monkeys:
+            take_monkey_turn_no_div(monkey, all_monkeys)
+        if current_turn % 1000 == 0:
+            print(f"Starting Round: {current_turn}")
+            print_item_count(all_monkeys)
+            current_turn += 1
+    return all_monkeys
+
+def take_monkey_turn_no_div(monkey, all_monkeys):
+    primes = [m.test_num for m in all_monkeys]
+    
     
 if __name__ == "__main__":
     original_monkeys = get_input_data()
